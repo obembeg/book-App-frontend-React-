@@ -1,0 +1,70 @@
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Footer from "./layout/Footer";
+import Navbar from "./layout/Navbar";
+import Hero from "./pages/Hero";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Dashboard from "./pages/Dashboard";
+import Profile from "./pages/Profile";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { storeContext } from "./context/storeContext";
+import { useContext, useEffect } from "react";
+import Spinner from "./layout/Spinner";
+import Book from "./pages/Book";
+import Reset from "./pages/Reset";
+
+function App() {
+  const { authLoading, setAuthLoading, isAuth } = useContext(storeContext);
+
+  
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setAuthLoading(false);
+    }, 600);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  // if (authLoading) {
+  //   return (
+  //     <div className="fixed inset-0 backdrop-blur-sm bg-white/20 grow flex items-center justify-center">
+  //       <Spinner />
+  //     </div>
+  //   );
+  // }
+  return (
+    <div className="flex flex-col min-h-screen">
+      <Router>
+        <Navbar />
+        <ToastContainer />
+        <main className="grow flex flex-col">
+          <Routes>
+            <Route path="/" element={isAuth ? <Dashboard /> : <Hero />} />
+
+            <Route path="/login" element={isAuth ? <Dashboard /> : <Login />} />
+
+            <Route
+              path="/register"
+              element={isAuth ? <Dashboard /> : <Register />}
+            />
+
+            <Route
+              path="/dashboard"
+              element={isAuth ? <Dashboard /> : <Login />}
+            />
+
+            <Route path="/profile" element={isAuth ? <Profile /> : <Hero />} />
+
+            <Route path="/book/:id" element={isAuth ? <Book /> : <Login />} />
+
+            <Route path="/reset-password" element={isAuth ? <Dashboard /> : <Reset />} />
+          </Routes>
+        </main>
+        <Footer />
+      </Router>
+    </div>
+  );
+}
+
+export default App;
