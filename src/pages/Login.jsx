@@ -53,7 +53,7 @@ function Login() {
 
         localStorage.setItem("accesstoken", data.accesstoken);
         setToken(data.accesstoken);
-      } else {
+      } else if (!response.ok || response.status === 401) {
         toast.error(data.message);
       }
       setIsLoading(false);
