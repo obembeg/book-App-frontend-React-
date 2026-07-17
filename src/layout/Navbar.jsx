@@ -56,8 +56,8 @@ function Navbar() {
               <div className="p-2 bg-indigo-600 rounded-xl shadow-lg shadow-indigo-600/35">
                 <IoBook className="w-5 h-5 text-white" />
               </div>
-              <span className="bg-gradient-to-r from-indigo-200 to-white bg-clip-text text-transparent">
-                OG Book App
+              <span className="bg-linear-to-r from-indigo-200 to-white bg-clip-text text-transparent">
+                OG Book Store.
               </span>
             </Link>
           </div>

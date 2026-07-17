@@ -17,8 +17,8 @@ function Footer() {
               <div className="p-2 bg-indigo-600 rounded-xl shadow-lg shadow-indigo-600/20">
                 <IoBook className="w-5 h-5 text-white" />
               </div>
-              <span className="bg-gradient-to-r from-indigo-200 to-white bg-clip-text text-transparent">
-                Book App
+              <span className="bg-linear-to-r from-indigo-200 to-white bg-clip-text text-transparent">
+                Book Store.
               </span>
             </div>
             <p className="text-sm text-slate-400 max-w-sm leading-relaxed">
