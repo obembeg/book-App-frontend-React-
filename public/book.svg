@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366F1"/>
+      <stop offset="100%" stop-color="#4338CA"/>
+    </linearGradient>
+
+    <linearGradient id="pages" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#EEF2FF"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="64" height="64" rx="16" fill="url(#bg)"/>
+
+  <!-- Left page -->
+  <path
+    d="M16 15
+       C16 13 18 12 20 12
+       H30
+       C34 12 36 15 36 19
+       V46
+       C34 44 31 43 28 43
+       H20
+       C18 43 16 41 16 39
+       Z"
+    fill="url(#pages)"
+  />
+
+  <!-- Right page -->
+  <path
+    d="M48 15
+       C48 13 46 12 44 12
+       H34
+       C30 12 28 15 28 19
+       V46
+       C30 44 33 43 36 43
+       H44
+       C46 43 48 41 48 39
+       Z"
+    fill="#FFFFFF"
+  />
+
+  <!-- Spine -->
+  <line
+    x1="32"
+    y1="15"
+    x2="32"
+    y2="46"
+    stroke="#4338CA"
+    stroke-width="2"
+    stroke-linecap="round"
+  />
+
+  <!-- Bookmark -->
+  <path
+    d="M32 12H39V25L35.5 22.5L32 25V12Z"
+    fill="#F59E0B"
+  />
+
+  <!-- Reading lines -->
+  <line x1="21" y1="22" x2="28" y2="22" stroke="#818CF8" stroke-width="1.6" stroke-linecap="round"/>
+  <line x1="21" y1="28" x2="27" y2="28" stroke="#818CF8" stroke-width="1.6" stroke-linecap="round"/>
+
+  <line x1="36" y1="22" x2="43" y2="22" stroke="#818CF8" stroke-width="1.6" stroke-linecap="round"/>
+  <line x1="36" y1="28" x2="42" y2="28" stroke="#818CF8" stroke-width="1.6" stroke-linecap="round"/>
+</svg>
