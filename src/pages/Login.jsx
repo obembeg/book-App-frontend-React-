@@ -46,7 +46,7 @@ function Login() {
       const data = await response.json();
       console.log(data);
       if (response.ok) {
-        toast.success("Login Success");
+        toast.success(data.message);
         setIsAuth(true);
 
         navigate("/dashboard");

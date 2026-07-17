@@ -78,6 +78,8 @@ export const StoreProvider = ({ children }) => {
 
       // Update notification list
       fetchNotification();
+
+      
       // Update unread count
       fetchUnreadCount();
     });

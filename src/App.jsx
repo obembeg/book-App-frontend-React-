@@ -6,7 +6,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, Slide } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { storeContext } from "./context/storeContext";
 import { useContext, useEffect } from "react";
@@ -37,7 +37,22 @@ function App() {
     <div className="flex flex-col min-h-screen">
       <Router>
         <Navbar />
-        <ToastContainer />
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          pauseOnHover
+          draggable
+          transition={Slide}
+          theme="dark"
+          toastClassName={() =>
+            "bg-slate-900/95 backdrop-blur-xl border border-slate-700 rounded-2xl p-4 shadow-2xl"
+          }
+          bodyClassName={() => "p-0"}
+          progressClassName="bg-indigo-500"
+        />
         <main className="grow flex flex-col">
           <Routes>
             <Route path="/" element={isAuth ? <Dashboard /> : <Hero />} />
@@ -58,7 +73,10 @@ function App() {
 
             <Route path="/book/:id" element={isAuth ? <Book /> : <Login />} />
 
-            <Route path="/reset-password" element={isAuth ? <Dashboard /> : <Reset />} />
+            <Route
+              path="/reset-password"
+              element={isAuth ? <Dashboard /> : <Reset />}
+            />
           </Routes>
         </main>
         <Footer />
