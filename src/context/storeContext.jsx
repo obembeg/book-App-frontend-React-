@@ -74,7 +74,8 @@ export const StoreProvider = ({ children }) => {
     socket.on("notification", (data) => {
       console.log(data);
 
-      toast.success(data.title);
+      toast.success(data.message);
+
 
       // Update notification list
       fetchNotification();

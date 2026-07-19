@@ -856,7 +856,17 @@ function Dashboard() {
                         >
                           <option value="">Select Category</option>
                           <option value="1">General</option>
-                          <option value="2">Science</option>
+                          <option value="2">Science and Technology</option>
+                          <option value="3">Arts and History</option>
+                          <option value="4">Philosophy</option>
+                          <option value="5">Religion</option>
+                          <option value="6">Politics</option>
+                          <option value="7">Education</option>
+                          <option value="8">Health</option>
+                          <option value="9">Travel and Nature</option>
+                          <option value="10">Food, Lifestyle and General well-being</option>
+                          <option value="11">Sports</option>
+                          <option value="12">Others</option>
                         </select>
                       </div>
 
@@ -950,9 +960,19 @@ function Dashboard() {
                           className="block w-full px-4 py-3 bg-slate-950 border border-slate-800 text-slate-350 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 rounded-xl text-sm transition"
                           required
                         >
-                          <option value="">Select Category</option>
+                         <option value="">Select Category</option>
                           <option value="1">General</option>
-                          <option value="2">Science</option>
+                          <option value="2">Science and Technology</option>
+                          <option value="3">Arts and History</option>
+                          <option value="4">Philosophy</option>
+                          <option value="5">Religion</option>
+                          <option value="6">Politics</option>
+                          <option value="7">Education</option>
+                          <option value="8">Health</option>
+                          <option value="9">Travel and Nature</option>
+                          <option value="10">Food, Lifestyle and General well-being</option>
+                          <option value="11">Sports</option>
+                          <option value="12">Others</option>
                         </select>
                       </div>
 
@@ -1057,27 +1077,34 @@ function Dashboard() {
   // ==========================================================================
   return (
     <div className="grow bg-mesh-glow min-h-[calc(100vh-80px)] p-4 md:p-8 max-w-7xl mx-auto w-full space-y-8 animate-fade-in-down">
-      
       {/* User Dashboard Welcome Header */}
       <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 p-6 sm:p-8 bg-slate-900/40 backdrop-blur-xl border border-slate-800/80 rounded-3xl shadow-xl">
         <div className="space-y-1">
           <h1 className="text-3xl font-extrabold text-white tracking-tight">
-            Reading <span className="bg-linear-to-r from-indigo-300 via-purple-300 to-indigo-100 bg-clip-text text-transparent">Workspace</span>
+            Reading{" "}
+            <span className="bg-linear-to-r from-indigo-300 via-purple-300 to-indigo-100 bg-clip-text text-transparent">
+              Workspace
+            </span>
           </h1>
-          <p className="text-slate-400 text-sm">Add, configure, and browse your personal book index.</p>
+          <p className="text-slate-400 text-sm">
+            Add, configure, and browse your personal book index.
+          </p>
         </div>
       </header>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        
         {/* Left Side: Create / Update Form */}
         <div className="lg:col-span-4 bg-slate-900/40 backdrop-blur-xl border border-slate-800/80 rounded-3xl p-6 sm:p-8 shadow-xl">
           {editMode ? (
             <div className="space-y-5">
               <div className="flex justify-between items-center pb-3 border-b border-slate-850">
                 <div>
-                  <h2 className="text-xl font-bold text-white tracking-tight">Modify Book</h2>
-                  <p className="text-xs text-slate-400 mt-0.5">Edit entry information below.</p>
+                  <h2 className="text-xl font-bold text-white tracking-tight">
+                    Modify Book
+                  </h2>
+                  <p className="text-xs text-slate-400 mt-0.5">
+                    Edit entry information below.
+                  </p>
                 </div>
                 <button
                   onClick={() => {
@@ -1097,7 +1124,9 @@ function Dashboard() {
 
               <form onSubmit={handleUpdate} className="space-y-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Book Title</label>
+                  <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
+                    Book Title
+                  </label>
                   <input
                     type="text"
                     value={title}
@@ -1109,7 +1138,9 @@ function Dashboard() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Author</label>
+                  <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
+                    Author
+                  </label>
                   <input
                     type="text"
                     value={author}
@@ -1122,7 +1153,9 @@ function Dashboard() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Price (₦)</label>
+                    <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
+                      Price (₦)
+                    </label>
                     <input
                       type="number"
                       value={price}
@@ -1132,9 +1165,11 @@ function Dashboard() {
                       className="block w-full px-4 py-3 bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 rounded-xl text-sm placeholder:text-slate-700 transition"
                     />
                   </div>
-                  
+
                   <div>
-                    <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Category</label>
+                    <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
+                      Category
+                    </label>
                     <select
                       value={category}
                       onChange={(e) => setCategory(e.target.value)}
@@ -1143,13 +1178,27 @@ function Dashboard() {
                     >
                       <option value="">Select Category</option>
                       <option value="1">General</option>
-                      <option value="2">Science</option>
+                      <option value="2">Science and Technology</option>
+                      <option value="3">Arts and History</option>
+                      <option value="4">Philosophy</option>
+                      <option value="5">Religion</option>
+                      <option value="6">Politics</option>
+                      <option value="7">Education</option>
+                      <option value="8">Health</option>
+                      <option value="9">Travel and Nature</option>
+                      <option value="10">
+                        Food, Lifestyle and General well-being
+                      </option>
+                      <option value="11">Sports</option>
+                      <option value="12">Others</option>
                     </select>
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Description</label>
+                  <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
+                    Description
+                  </label>
                   <textarea
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
@@ -1173,13 +1222,19 @@ function Dashboard() {
           ) : (
             <div className="space-y-5">
               <div>
-                <h2 className="text-xl font-bold text-white tracking-tight">Add New Book</h2>
-                <p className="text-xs text-slate-400 mt-1">Register a new catalog book.</p>
+                <h2 className="text-xl font-bold text-white tracking-tight">
+                  Add New Book
+                </h2>
+                <p className="text-xs text-slate-400 mt-1">
+                  Register a new catalog book.
+                </p>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Book Title</label>
+                  <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
+                    Book Title
+                  </label>
                   <input
                     type="text"
                     value={title}
@@ -1191,7 +1246,9 @@ function Dashboard() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Author</label>
+                  <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
+                    Author
+                  </label>
                   <input
                     type="text"
                     value={author}
@@ -1204,7 +1261,9 @@ function Dashboard() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Price (₦)</label>
+                    <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
+                      Price (₦)
+                    </label>
                     <input
                       type="number"
                       value={price}
@@ -1216,7 +1275,9 @@ function Dashboard() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Category</label>
+                    <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
+                      Category
+                    </label>
                     <select
                       value={category}
                       onChange={(e) => setCategory(e.target.value)}
@@ -1224,13 +1285,27 @@ function Dashboard() {
                     >
                       <option value="">Select Category</option>
                       <option value="1">General</option>
-                      <option value="2">Science</option>
+                      <option value="2">Science and Technology</option>
+                      <option value="3">Arts and History</option>
+                      <option value="4">Philosophy</option>
+                      <option value="5">Religion</option>
+                      <option value="6">Politics</option>
+                      <option value="7">Education</option>
+                      <option value="8">Health</option>
+                      <option value="9">Travel and Nature</option>
+                      <option value="10">
+                        Food, Lifestyle and General well-being
+                      </option>
+                      <option value="11">Sports</option>
+                      <option value="12">Others</option>
                     </select>
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Description</label>
+                  <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
+                    Description
+                  </label>
                   <textarea
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
@@ -1267,9 +1342,12 @@ function Dashboard() {
                 <IoBookOutline className="w-8 h-8" />
               </div>
               <div className="space-y-1">
-                <h3 className="text-lg font-bold text-white">No Publications Found</h3>
+                <h3 className="text-lg font-bold text-white">
+                  No Publications Found
+                </h3>
                 <p className="text-slate-400 text-sm max-w-sm mx-auto leading-relaxed">
-                  Hey! You have no books registered on this workspace yet. Add a new book using the form on the left to start!
+                  Hey! You have no books registered on this workspace yet. Add a
+                  new book using the form on the left to start!
                 </p>
               </div>
             </div>
@@ -1354,7 +1432,6 @@ function Dashboard() {
             </div>
           )}
         </div>
-
       </div>
     </div>
   );
