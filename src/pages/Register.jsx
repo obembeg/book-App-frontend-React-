@@ -8,7 +8,6 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
 
-
 function Register() {
   const {
     email,
@@ -167,7 +166,9 @@ function Register() {
                   name="email"
                   type="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) =>
+                    setEmail(e.target.value.trim().toLowerCase())
+                  }
                   required
                   className="block w-full px-4 py-3 bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 rounded-xl text-sm placeholder:text-slate-650 transition duration-200"
                   placeholder="you@example.com"

@@ -5,6 +5,7 @@ import { useContext, useEffect } from "react";
 import Spinner from "../layout/Spinner";
 import { toast } from "react-toastify";
 import Deleted from "./Deleted";
+// import socket from "../socket";
 import {
   IoBookOutline,
   IoPricetagOutline,
@@ -21,7 +22,7 @@ import {
   IoPersonOutline,
   IoChevronForwardOutline,
   IoListOutline,
-  IoCardOutline
+  IoCardOutline,
 } from "react-icons/io5";
 
 function Dashboard() {
@@ -72,6 +73,7 @@ function Dashboard() {
     allowAccess,
     removeAdmin,
     notification,
+    notificationA,
     makeAdmin,
     createBookAdmin,
     updateBookAdmin,
@@ -83,13 +85,23 @@ function Dashboard() {
     setViewCategory,
     viewCategory,
     getAllCategory,
+    fetchUser,
+    user,
   } = useContext(storeContext);
+
+  const [yourBooks, setYourBooks] = useState(false);
+  const [platformBooks, setPlatformBooks] = useState(false);
 
   const selectedUser = users.find((user) => user.id === selectedUserId);
 
   useEffect(() => {
     getAllBooks();
+    fetchUser();
   }, []);
+
+  // socket.on("fetchUser", () => {
+  //   fetchUser();
+  // });
 
   const createBook = async () => {
     try {
@@ -321,14 +333,18 @@ function Dashboard() {
   if (isAdmin) {
     return (
       <div className="grow bg-mesh-glow min-h-[calc(100vh-80px)] p-4 md:p-8 space-y-8 max-w-7xl mx-auto w-full animate-fade-in-down">
-        
         {/* Welcome Section */}
         <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 p-6 sm:p-8 bg-slate-900/40 backdrop-blur-xl border border-slate-800/80 rounded-3xl shadow-xl">
           <div className="space-y-1">
             <h1 className="text-3xl font-extrabold text-white tracking-tight flex items-center gap-2">
-              Welcome, <span className="bg-linear-to-r from-indigo-300 via-purple-300 to-indigo-100 bg-clip-text text-transparent">Admin</span>
+              Welcome,{" "}
+              <span className="bg-linear-to-r from-indigo-300 via-purple-300 to-indigo-100 bg-clip-text text-transparent">
+                Admin
+              </span>
             </h1>
-            <p className="text-slate-400 text-sm">Manage users, books, access levels, and reading categories.</p>
+            <p className="text-slate-400 text-sm">
+              Manage users, books, access levels, and reading categories.
+            </p>
           </div>
 
           {viewUsers || viewCategory ? (
@@ -372,12 +388,15 @@ function Dashboard() {
                 <div className="p-3 w-fit bg-indigo-950/40 border border-indigo-800/30 rounded-2xl text-indigo-400">
                   <IoPeopleOutline className="w-6 h-6" />
                 </div>
-                <h3 className="text-xl font-bold text-white">Users Directory</h3>
+                <h3 className="text-xl font-bold text-white">
+                  Users Directory
+                </h3>
                 <p className="text-slate-400 text-sm leading-relaxed">
-                  Verify members list, update platform roles, delete users, and review individual user book catalog.
+                  Verify members list, update platform roles, delete users, and
+                  review individual user book catalog.
                 </p>
               </div>
-              <button 
+              <button
                 onClick={() => setViewUsers(true)}
                 className="mt-6 flex items-center justify-between text-sm font-bold text-indigo-400 group cursor-pointer hover:underline"
               >
@@ -391,12 +410,15 @@ function Dashboard() {
                 <div className="p-3 w-fit bg-purple-950/40 border border-purple-800/30 rounded-2xl text-purple-400">
                   <IoListOutline className="w-6 h-6" />
                 </div>
-                <h3 className="text-xl font-bold text-white">Categories & Tags</h3>
+                <h3 className="text-xl font-bold text-white">
+                  Categories & Tags
+                </h3>
                 <p className="text-slate-400 text-sm leading-relaxed">
-                  Organize books context by creating and adjusting categories (e.g. Science, Literature, Engineering).
+                  Organize books context by creating and adjusting categories
+                  (e.g. Science, Literature, Engineering).
                 </p>
               </div>
-              <button 
+              <button
                 onClick={() => setViewCategory(true)}
                 className="mt-6 flex items-center justify-between text-sm font-bold text-purple-400 group cursor-pointer hover:underline"
               >
@@ -412,12 +434,14 @@ function Dashboard() {
                 </div>
                 <h3 className="text-xl font-bold text-white">Info Hub</h3>
                 <p className="text-slate-400 text-sm leading-relaxed">
-                  There are currently {users.length} active users indexing {everyBook.length} publications. 
-                  <br />Open directory to update or modify specific items.
+                  There are currently {users.length} active users indexing{" "}
+                  {everyBook.length} publications.
+                  <br />
+                  Open directory to update or modify specific items.
                 </p>
               </div>
               <div className="mt-6 text-sm text-slate-500 font-semibold tracking-wider uppercase">
-                Global Active Index 
+                Global Active Index
               </div>
             </div>
           </div>
@@ -432,7 +456,7 @@ function Dashboard() {
                 <IoListOutline className="w-6 h-6 text-purple-400" />
                 Existing Categories
               </h2>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {Array.isArray(category) && category.length > 0 ? (
                   category.map((cat) => (
@@ -444,7 +468,9 @@ function Dashboard() {
                         <span className="text-[10px] font-bold text-purple-400 uppercase tracking-widest bg-purple-950/40 px-2.5 py-1 rounded-full border border-purple-800/20">
                           ID: {cat.id}
                         </span>
-                        <h3 className="text-lg font-bold text-white mt-2.5 mb-1.5">{cat.name}</h3>
+                        <h3 className="text-lg font-bold text-white mt-2.5 mb-1.5">
+                          {cat.name}
+                        </h3>
                         <p className="text-slate-400 text-xs leading-relaxed line-clamp-3">
                           {cat.description || "No description provided."}
                         </p>
@@ -479,13 +505,19 @@ function Dashboard() {
               {editMode ? (
                 <div className="space-y-5">
                   <div>
-                    <h2 className="text-xl font-bold text-white tracking-tight">Update Category</h2>
-                    <p className="text-xs text-slate-400 mt-1">Update details for the selected category.</p>
+                    <h2 className="text-xl font-bold text-white tracking-tight">
+                      Update Category
+                    </h2>
+                    <p className="text-xs text-slate-400 mt-1">
+                      Update details for the selected category.
+                    </p>
                   </div>
 
                   <form onSubmit={updateCategory} className="space-y-4">
                     <div>
-                      <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Name</label>
+                      <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
+                        Name
+                      </label>
                       <input
                         type="text"
                         required
@@ -495,9 +527,11 @@ function Dashboard() {
                         placeholder="Category Name"
                       />
                     </div>
-                    
+
                     <div>
-                      <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Category ID</label>
+                      <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
+                        Category ID
+                      </label>
                       <input
                         type="number"
                         required
@@ -509,7 +543,9 @@ function Dashboard() {
                     </div>
 
                     <div>
-                      <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Description</label>
+                      <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
+                        Description
+                      </label>
                       <textarea
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
@@ -544,13 +580,19 @@ function Dashboard() {
               ) : (
                 <div className="space-y-5">
                   <div>
-                    <h2 className="text-xl font-bold text-white tracking-tight">Create Category</h2>
-                    <p className="text-xs text-slate-400 mt-1">Add to list of existing categories.</p>
+                    <h2 className="text-xl font-bold text-white tracking-tight">
+                      Create Category
+                    </h2>
+                    <p className="text-xs text-slate-400 mt-1">
+                      Add to list of existing categories.
+                    </p>
                   </div>
 
                   <form onSubmit={addCategory} className="space-y-4">
                     <div>
-                      <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Name</label>
+                      <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
+                        Name
+                      </label>
                       <input
                         type="text"
                         required
@@ -562,7 +604,9 @@ function Dashboard() {
                     </div>
 
                     <div>
-                      <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Description</label>
+                      <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
+                        Description
+                      </label>
                       <textarea
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
@@ -602,19 +646,25 @@ function Dashboard() {
                   <div
                     key={u.id}
                     className={`p-6 bg-slate-900/40 backdrop-blur-xl border rounded-3xl hover:border-slate-700/60 transition duration-300 flex flex-col justify-between ${
-                      u.isAdmin ? "border-indigo-900/50 shadow-lg shadow-indigo-950/10" : "border-slate-800/80"
+                      u.isAdmin
+                        ? "border-indigo-900/50 shadow-lg shadow-indigo-950/10"
+                        : "border-slate-800/80"
                     }`}
                   >
                     <div>
                       <div className="flex items-center gap-3.5 mb-4">
                         <div className="w-12 h-12 rounded-xl bg-slate-800 flex items-center justify-center font-bold text-slate-200 shadow-md">
-                          {u?.profile?.fullName ? u.profile.fullName[0].toUpperCase() : u.email[0].toUpperCase()}
+                          {u?.profile?.fullName
+                            ? u.profile.fullName[0].toUpperCase()
+                            : u.email[0].toUpperCase()}
                         </div>
                         <div>
                           <h3 className="font-bold text-white leading-tight">
                             {u?.profile?.fullName || "No profile setup"}
                           </h3>
-                          <p className="text-xs text-slate-500 truncate max-w-45 mt-1">{u.email}</p>
+                          <p className="text-xs text-slate-500 truncate max-w-45 mt-1">
+                            {u.email}
+                          </p>
                         </div>
                       </div>
 
@@ -625,11 +675,13 @@ function Dashboard() {
                             Admin Role
                           </span>
                         )}
-                        <span className={`text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full border ${
-                          u.isAllowed 
-                            ? "text-emerald-400 bg-emerald-950/40 border-emerald-900/35"
-                            : "text-rose-400 bg-rose-950/40 border-rose-900/35"
-                        }`}>
+                        <span
+                          className={`text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full border ${
+                            u.isAllowed
+                              ? "text-emerald-400 bg-emerald-950/40 border-emerald-900/35"
+                              : "text-rose-400 bg-rose-950/40 border-rose-900/35"
+                          }`}
+                        >
                           {u.isAllowed ? "Can Publish" : "Publish Blocked"}
                         </span>
                       </div>
@@ -700,9 +752,12 @@ function Dashboard() {
                 <IoShieldCheckmarkOutline className="w-5 h-5" />
               </div>
               <div>
-                <h2 className="text-xl font-bold text-white">Access Permissions</h2>
+                <h2 className="text-xl font-bold text-white">
+                  Access Permissions
+                </h2>
                 <p className="text-xs text-slate-400 mt-0.5">
-                  Update role bindings for {viewAccess.profile?.fullName || viewAccess.email}
+                  Update role bindings for{" "}
+                  {viewAccess.profile?.fullName || viewAccess.email}
                 </p>
               </div>
             </div>
@@ -711,10 +766,14 @@ function Dashboard() {
               {/* Admin toggle row */}
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 bg-slate-950/50 border border-slate-800 rounded-2xl gap-3">
                 <div>
-                  <h4 className="text-sm font-bold text-white">Administrator Access</h4>
-                  <p className="text-xs text-slate-500 mt-0.5">Grants full admin system read/write overrides.</p>
+                  <h4 className="text-sm font-bold text-white">
+                    Administrator Access
+                  </h4>
+                  <p className="text-xs text-slate-500 mt-0.5">
+                    Grants full admin system read/write overrides.
+                  </p>
                 </div>
-                
+
                 {viewAccess.isAdmin ? (
                   <button
                     onClick={async () => await removeAdmin(viewAccess.id)}
@@ -735,8 +794,12 @@ function Dashboard() {
               {/* Allowed book creation toggle row */}
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 bg-slate-950/50 border border-slate-800 rounded-2xl gap-3">
                 <div>
-                  <h4 className="text-sm font-bold text-white">Publishing Authority</h4>
-                  <p className="text-xs text-slate-500 mt-0.5">Permits user to create or publish catalog titles.</p>
+                  <h4 className="text-sm font-bold text-white">
+                    Publishing Authority
+                  </h4>
+                  <p className="text-xs text-slate-500 mt-0.5">
+                    Permits user to create or publish catalog titles.
+                  </p>
                 </div>
 
                 {viewAccess.isAllowed ? (
@@ -751,7 +814,10 @@ function Dashboard() {
                   </button>
                 ) : (
                   <button
-                    onClick={() => allowAccess(viewAccess.id)}
+                    onClick={async () => {
+                      await allowAccess(viewAccess.id);
+                      await notificationA(viewAccess.id);
+                    }}
                     className="w-full sm:w-auto px-4 py-2 bg-emerald-650/20 hover:bg-emerald-600 text-emerald-400 hover:text-white border border-emerald-900/35 hover:border-transparent text-xs font-bold rounded-xl transition duration-200 cursor-pointer active:scale-95"
                   >
                     Enable Publishing
@@ -768,9 +834,13 @@ function Dashboard() {
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div className="space-y-1">
                 <h2 className="text-2xl font-bold text-white">
-                  Books by {selectedUser.profile?.fullName || selectedUser.email}
+                  Books by{" "}
+                  {selectedUser.profile?.fullName || selectedUser.email}
                 </h2>
-                <p className="text-xs text-slate-500">Currently hosting {selectedUser.books?.length || 0} catalog publications.</p>
+                <p className="text-xs text-slate-500">
+                  Currently hosting {selectedUser.books?.length || 0} catalog
+                  publications.
+                </p>
               </div>
 
               <button
@@ -789,8 +859,12 @@ function Dashboard() {
                   <div className="max-w-xl w-full bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6 animate-fade-in-down">
                     <div className="flex justify-between items-center pb-4 border-b border-slate-850">
                       <div>
-                        <h3 className="text-xl font-bold text-white">Modify User Book</h3>
-                        <p className="text-xs text-slate-400 mt-0.5">Admin catalog override controls.</p>
+                        <h3 className="text-xl font-bold text-white">
+                          Modify User Book
+                        </h3>
+                        <p className="text-xs text-slate-400 mt-0.5">
+                          Admin catalog override controls.
+                        </p>
                       </div>
                       <button
                         onClick={() => {
@@ -810,7 +884,9 @@ function Dashboard() {
 
                     <form onSubmit={adminUpdateBook} className="space-y-4">
                       <div>
-                        <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Book Title</label>
+                        <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
+                          Book Title
+                        </label>
                         <input
                           type="text"
                           value={title}
@@ -823,7 +899,9 @@ function Dashboard() {
 
                       <div className="grid grid-cols-2 gap-4">
                         <div>
-                          <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Author</label>
+                          <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
+                            Author
+                          </label>
                           <input
                             type="text"
                             value={author}
@@ -834,7 +912,9 @@ function Dashboard() {
                           />
                         </div>
                         <div>
-                          <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Price (₦)</label>
+                          <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
+                            Price (₦)
+                          </label>
                           <input
                             type="number"
                             value={price}
@@ -847,7 +927,9 @@ function Dashboard() {
                       </div>
 
                       <div>
-                        <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Category</label>
+                        <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
+                          Category
+                        </label>
                         <select
                           value={category}
                           onChange={(e) => setCategory(e.target.value)}
@@ -864,14 +946,18 @@ function Dashboard() {
                           <option value="7">Education</option>
                           <option value="8">Health</option>
                           <option value="9">Travel and Nature</option>
-                          <option value="10">Food, Lifestyle and General well-being</option>
+                          <option value="10">
+                            Food, Lifestyle and General well-being
+                          </option>
                           <option value="11">Sports</option>
                           <option value="12">Others</option>
                         </select>
                       </div>
 
                       <div>
-                        <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Description</label>
+                        <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
+                          Description
+                        </label>
                         <textarea
                           value={description}
                           onChange={(e) => setDescription(e.target.value)}
@@ -896,8 +982,12 @@ function Dashboard() {
                   <div className="max-w-xl w-full bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6 animate-fade-in-down">
                     <div className="flex justify-between items-center pb-4 border-b border-slate-855">
                       <div>
-                        <h3 className="text-xl font-bold text-white">Create Book entry</h3>
-                        <p className="text-xs text-slate-400 mt-0.5">Admin catalog override entry.</p>
+                        <h3 className="text-xl font-bold text-white">
+                          Create Book entry
+                        </h3>
+                        <p className="text-xs text-slate-400 mt-0.5">
+                          Admin catalog override entry.
+                        </p>
                       </div>
                       <button
                         onClick={() => {
@@ -916,7 +1006,9 @@ function Dashboard() {
 
                     <form onSubmit={addBookAdmin} className="space-y-4">
                       <div>
-                        <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Book Title</label>
+                        <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
+                          Book Title
+                        </label>
                         <input
                           type="text"
                           value={title}
@@ -929,7 +1021,9 @@ function Dashboard() {
 
                       <div className="grid grid-cols-2 gap-4">
                         <div>
-                          <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Author</label>
+                          <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
+                            Author
+                          </label>
                           <input
                             type="text"
                             value={author}
@@ -940,7 +1034,9 @@ function Dashboard() {
                           />
                         </div>
                         <div>
-                          <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Price (₦)</label>
+                          <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
+                            Price (₦)
+                          </label>
                           <input
                             type="number"
                             value={price}
@@ -953,14 +1049,16 @@ function Dashboard() {
                       </div>
 
                       <div>
-                        <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Category</label>
+                        <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
+                          Category
+                        </label>
                         <select
                           value={category}
                           onChange={(e) => setCategory(e.target.value)}
                           className="block w-full px-4 py-3 bg-slate-950 border border-slate-800 text-slate-350 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 rounded-xl text-sm transition"
                           required
                         >
-                         <option value="">Select Category</option>
+                          <option value="">Select Category</option>
                           <option value="1">General</option>
                           <option value="2">Science and Technology</option>
                           <option value="3">Arts and History</option>
@@ -970,14 +1068,18 @@ function Dashboard() {
                           <option value="7">Education</option>
                           <option value="8">Health</option>
                           <option value="9">Travel and Nature</option>
-                          <option value="10">Food, Lifestyle and General well-being</option>
+                          <option value="10">
+                            Food, Lifestyle and General well-being
+                          </option>
                           <option value="11">Sports</option>
                           <option value="12">Others</option>
                         </select>
                       </div>
 
                       <div>
-                        <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Description</label>
+                        <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
+                          Description
+                        </label>
                         <textarea
                           value={description}
                           onChange={(e) => setDescription(e.target.value)}
@@ -1012,14 +1114,18 @@ function Dashboard() {
                   >
                     <div>
                       <div className="flex justify-between items-start gap-4">
-                        <h4 className="text-lg font-bold text-white leading-snug">{book.title}</h4>
+                        <h4 className="text-lg font-bold text-white leading-snug">
+                          {book.title}
+                        </h4>
                         <span className="text-xs font-bold text-slate-300 bg-slate-900 border border-slate-800 px-2.5 py-1 rounded-full">
                           ₦{Number(book.price).toLocaleString()}
                         </span>
                       </div>
-                      
-                      <p className="text-xs text-indigo-400 font-semibold mt-1">by {book.author}</p>
-                      
+
+                      <p className="text-xs text-indigo-400 font-semibold mt-1">
+                        by {book.author}
+                      </p>
+
                       {book.category && (
                         <span className="inline-block mt-3 text-[10px] font-bold text-slate-400 bg-slate-900 px-2 py-0.5 rounded border border-slate-800">
                           {book.category.name}
@@ -1063,7 +1169,9 @@ function Dashboard() {
                   </div>
                 ))
               ) : (
-                <p className="text-slate-500 font-medium col-span-2 text-center py-6">No books registered under this user account.</p>
+                <p className="text-slate-500 font-medium col-span-2 text-center py-6">
+                  No books registered under this user account.
+                </p>
               )}
             </div>
           </div>
@@ -1082,13 +1190,41 @@ function Dashboard() {
         <div className="space-y-1">
           <h1 className="text-3xl font-extrabold text-white tracking-tight">
             Reading{" "}
-            <span className="bg-linear-to-r from-indigo-300 via-purple-300 to-indigo-100 bg-clip-text text-transparent">
-              Workspace
-            </span>
+            {user.isAllowed ? (
+              <span className="bg-linear-to-r from-indigo-300 via-purple-300 to-indigo-100 bg-clip-text text-transparent">
+                Workspace
+              </span>
+            ) : (
+              <span className="bg-linear-to-r from-indigo-300 via-purple-300 to-indigo-100 bg-clip-text">
+                Workspace 🚫
+              </span>
+            )}
           </h1>
           <p className="text-slate-400 text-sm">
             Add, configure, and browse your personal book index.
           </p>
+        </div>
+        <div>
+          <h2 className="text-sm text-slate-400 font-semibold tracking-wide uppercase">
+            View{" "}
+            <span
+              onClick={() => {
+                setYourBooks(!yourBooks);
+              }}
+              className="text-blue-500 cursor-pointer"
+            >
+              Your Books
+            </span>{" "}
+            or Explore{" "}
+            <span
+              onClick={() => {
+                setPlatformBooks(true);
+              }}
+              className="text-blue-500 cursor-pointer"
+            >
+              All Books
+            </span>
+          </h2>
         </div>
       </header>
 
@@ -1317,12 +1453,20 @@ function Dashboard() {
                 </div>
 
                 <div className="pt-2">
-                  <button
-                    type="submit"
-                    className="w-full flex justify-center items-center px-4 py-3 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-bold rounded-xl shadow-lg shadow-indigo-600/15 transition cursor-pointer"
-                  >
-                    Publish Entry
-                  </button>
+                  {user.isAllowed ? (
+                    <button
+                      type="submit"
+                      className="w-full flex justify-center items-center px-4 py-3 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-bold rounded-xl shadow-lg shadow-indigo-600/15 transition cursor-pointer"
+                    >
+                      Publish Entry
+                    </button>
+                  ) : (
+                    <p
+                      className="w-full flex justify-center items-center px-4 py-3 bg-red-600 hover:bg-red-700 text-white text-sm font-bold rounded-xl shadow-lg shadow-indigo-600/15 transition "
+                    >
+                     Publish Blocked
+                    </p>
+                  )}
                 </div>
               </form>
             </div>
@@ -1330,108 +1474,111 @@ function Dashboard() {
         </div>
 
         {/* Right Side: Available Books Catalog */}
-        <div className="lg:col-span-8 space-y-6">
-          <h2 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
-            <IoBookOutline className="w-6 h-6 text-indigo-400" />
-            Catalog Listings
-          </h2>
 
-          {books?.length < 1 ? (
-            <div className="p-12 text-center bg-slate-900/40 backdrop-blur-xl border border-slate-800/80 rounded-3xl space-y-4">
-              <div className="p-4 w-fit bg-slate-950 border border-slate-850 rounded-2xl text-slate-500 mx-auto">
-                <IoBookOutline className="w-8 h-8" />
+        {yourBooks && (
+          <div className="lg:col-span-8 space-y-6">
+            <h2 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+              <IoBookOutline className="w-6 h-6 text-indigo-400" />
+              Catalog Listings
+            </h2>
+
+            {books?.length < 1 ? (
+              <div className="p-12 text-center bg-slate-900/40 backdrop-blur-xl border border-slate-800/80 rounded-3xl space-y-4">
+                <div className="p-4 w-fit bg-slate-950 border border-slate-850 rounded-2xl text-slate-500 mx-auto">
+                  <IoBookOutline className="w-8 h-8" />
+                </div>
+                <div className="space-y-1">
+                  <h3 className="text-lg font-bold text-white">
+                    No Publications Found
+                  </h3>
+                  <p className="text-slate-400 text-sm max-w-sm mx-auto leading-relaxed">
+                    Hey! You have no books registered on this workspace yet. Add
+                    a new book using the form on the left to start!
+                  </p>
+                </div>
               </div>
-              <div className="space-y-1">
-                <h3 className="text-lg font-bold text-white">
-                  No Publications Found
-                </h3>
-                <p className="text-slate-400 text-sm max-w-sm mx-auto leading-relaxed">
-                  Hey! You have no books registered on this workspace yet. Add a
-                  new book using the form on the left to start!
-                </p>
-              </div>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {Array.isArray(books) &&
-                books.map((book) => (
-                  <div
-                    key={book.id}
-                    className="p-6 bg-slate-900/40 backdrop-blur-xl border border-slate-800/80 hover:border-slate-700/60 rounded-3xl shadow-xl hover:scale-[1.01] hover:-translate-y-0.5 transition duration-300 flex flex-col justify-between"
-                  >
-                    <div>
-                      {/* Title & Price Header */}
-                      <div className="flex justify-between items-start gap-4">
-                        <h3 className="text-lg font-extrabold text-white leading-snug line-clamp-2">
-                          {book.title}
-                        </h3>
-                        <span className="inline-flex items-center text-xs font-bold text-emerald-400 bg-emerald-950/40 border border-emerald-900/35 px-2.5 py-1 rounded-full shadow-inner whitespace-nowrap">
-                          ₦{Number(book.price).toLocaleString()}
-                        </span>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {Array.isArray(books) &&
+                  books.map((book) => (
+                    <div
+                      key={book.id}
+                      className="p-6 bg-slate-900/40 backdrop-blur-xl border border-slate-800/80 hover:border-slate-700/60 rounded-3xl shadow-xl hover:scale-[1.01] hover:-translate-y-0.5 transition duration-300 flex flex-col justify-between"
+                    >
+                      <div>
+                        {/* Title & Price Header */}
+                        <div className="flex justify-between items-start gap-4">
+                          <h3 className="text-lg font-extrabold text-white leading-snug line-clamp-2">
+                            {book.title}
+                          </h3>
+                          <span className="inline-flex items-center text-xs font-bold text-emerald-400 bg-emerald-950/40 border border-emerald-900/35 px-2.5 py-1 rounded-full shadow-inner whitespace-nowrap">
+                            ₦{Number(book.price).toLocaleString()}
+                          </span>
+                        </div>
+
+                        {/* Author */}
+                        <p className="text-xs text-indigo-400 font-semibold mt-1">
+                          by {book.author}
+                        </p>
+
+                        {/* Category Label */}
+                        {book.category && (
+                          <div className="mt-3.5 inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-slate-950 border border-slate-800 text-[10px] text-slate-400 font-bold uppercase tracking-wider">
+                            <IoFolderOpenOutline className="w-3 h-3 text-slate-500" />
+                            {book.category.name}
+                          </div>
+                        )}
+
+                        {/* Description preview */}
+                        <p className="text-slate-400 text-xs mt-4 leading-relaxed line-clamp-3">
+                          {book.description || "No book summary was uploaded."}
+                        </p>
                       </div>
 
-                      {/* Author */}
-                      <p className="text-xs text-indigo-400 font-semibold mt-1">
-                        by {book.author}
-                      </p>
+                      {/* Footer Actions */}
+                      <div className="grid grid-cols-3 gap-2.5 pt-4 mt-6 border-t border-slate-850">
+                        <Link
+                          to={`/book/${book.id}`}
+                          className="flex items-center justify-center gap-1 px-3 py-2 text-xs font-bold text-slate-300 hover:text-white bg-slate-950/60 hover:bg-slate-950 border border-slate-800 rounded-xl transition duration-200"
+                        >
+                          <IoEyeOutline className="w-4 h-4" />
+                          <span>View</span>
+                        </Link>
 
-                      {/* Category Label */}
-                      {book.category && (
-                        <div className="mt-3.5 inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-slate-950 border border-slate-800 text-[10px] text-slate-400 font-bold uppercase tracking-wider">
-                          <IoFolderOpenOutline className="w-3 h-3 text-slate-500" />
-                          {book.category.name}
-                        </div>
-                      )}
+                        <button
+                          onClick={() => {
+                            setEditMode(true);
+                            setBookId(book.id);
+                            setAuthor(book.author);
+                            setCategory(book.category.id);
+                            setTitle(book.title);
+                            setPrice(book.price);
+                            setDescription(book.description);
+                            window.scrollTo({ top: 0, behavior: "smooth" });
+                          }}
+                          className="flex items-center justify-center gap-1 px-3 py-2 text-xs font-bold text-amber-400 hover:text-white bg-amber-950/20 hover:bg-amber-600 rounded-xl border border-amber-900/40 hover:border-transparent transition duration-200 cursor-pointer"
+                        >
+                          <IoCreateOutline className="w-4 h-4" />
+                          <span>Edit</span>
+                        </button>
 
-                      {/* Description preview */}
-                      <p className="text-slate-400 text-xs mt-4 leading-relaxed line-clamp-3">
-                        {book.description || "No book summary was uploaded."}
-                      </p>
+                        <button
+                          onClick={() => {
+                            setBookId(book.id);
+                            setDeleted(true);
+                          }}
+                          className="flex items-center justify-center gap-1 px-3 py-2 text-xs font-bold text-rose-450 hover:text-white bg-rose-950/20 hover:bg-rose-600 rounded-xl border border-rose-900/40 hover:border-transparent transition duration-200 cursor-pointer"
+                        >
+                          <IoTrashOutline className="w-4 h-4" />
+                          <span>Delete</span>
+                        </button>
+                      </div>
                     </div>
-
-                    {/* Footer Actions */}
-                    <div className="grid grid-cols-3 gap-2.5 pt-4 mt-6 border-t border-slate-850">
-                      <Link
-                        to={`/book/${book.id}`}
-                        className="flex items-center justify-center gap-1 px-3 py-2 text-xs font-bold text-slate-300 hover:text-white bg-slate-950/60 hover:bg-slate-950 border border-slate-800 rounded-xl transition duration-200"
-                      >
-                        <IoEyeOutline className="w-4 h-4" />
-                        <span>View</span>
-                      </Link>
-
-                      <button
-                        onClick={() => {
-                          setEditMode(true);
-                          setBookId(book.id);
-                          setAuthor(book.author);
-                          setCategory(book.category.id);
-                          setTitle(book.title);
-                          setPrice(book.price);
-                          setDescription(book.description);
-                          window.scrollTo({ top: 0, behavior: "smooth" });
-                        }}
-                        className="flex items-center justify-center gap-1 px-3 py-2 text-xs font-bold text-amber-400 hover:text-white bg-amber-950/20 hover:bg-amber-600 rounded-xl border border-amber-900/40 hover:border-transparent transition duration-200 cursor-pointer"
-                      >
-                        <IoCreateOutline className="w-4 h-4" />
-                        <span>Edit</span>
-                      </button>
-
-                      <button
-                        onClick={() => {
-                          setBookId(book.id);
-                          setDeleted(true);
-                        }}
-                        className="flex items-center justify-center gap-1 px-3 py-2 text-xs font-bold text-rose-450 hover:text-white bg-rose-950/20 hover:bg-rose-600 rounded-xl border border-rose-900/40 hover:border-transparent transition duration-200 cursor-pointer"
-                      >
-                        <IoTrashOutline className="w-4 h-4" />
-                        <span>Delete</span>
-                      </button>
-                    </div>
-                  </div>
-                ))}
-            </div>
-          )}
-        </div>
+                  ))}
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

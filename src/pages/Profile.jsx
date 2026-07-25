@@ -88,20 +88,21 @@ function Profile() {
   return (
     <div className="grow bg-mesh-glow min-h-[calc(100vh-80px)] py-12 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto w-full animate-fade-in-down">
       <div className="space-y-8">
-        
         {/* Profile Card Container */}
-        <div className="bg-slate-900/40 backdrop-blur-xl border border-slate-800/80 rounded-3xl overflow-hidden shadow-2xl">
-          
+        <div className="bg-slate-900/40 backdrop-blur-xl border border-slate-800/80 rounded-3xl overflow-hidden shadow-2xl ">
           {/* Cover Background */}
-          <div className="h-32 sm:h-52 bg-linear-to-r from-indigo-700 via-purple-600 to-fuchsia-600 relative">
-            <div className="absolute inset-0 bg-slate-950/10"></div>
+          <div className="h-32 sm:h-42 mb-5 bg-linear-to-r from-indigo-700 via-purple-700 to-fuchsia-600 relative">
+            <div className="absolute inset-0 bg-slate-950/10 z-0 rounded-t-3xl">
+              {" "}
+            </div>
           </div>
 
           {/* Profile Content */}
-          <div className="px-6 pb-8 sm:px-10">
+          <div className="px-6 pb-8 sm:px-10 relative z-10">
             {/* Avatar block and core info */}
             <div className="flex flex-col sm:flex-row sm:items-end sm:gap-6 mb-8 -mt-16 sm:-mt-24">
-              <div className="flex justify-center sm:justify-start">
+              
+              <div className="flex justify-center sm:justify-start relative z-20">
                 <img
                   src="https://i.pravatar.cc/300"
                   alt="avatar profile"
@@ -171,9 +172,12 @@ function Profile() {
                 </div>
               ) : (
                 <div className="space-y-2 mb-6">
-                  <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">Biography</h3>
+                  <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">
+                    Biography
+                  </h3>
                   <p className="text-slate-300 text-sm leading-relaxed max-w-3xl whitespace-pre-wrap">
-                    {profile.bio || "Write something interesting about yourself! Click edit profile above."}
+                    {profile.bio ||
+                      "Write something interesting about yourself! Click edit profile above."}
                   </p>
                 </div>
               )}
@@ -183,7 +187,12 @@ function Profile() {
             {!isEditing && (
               <div className="flex items-center gap-2 text-xs text-slate-500 bg-slate-950/40 border border-slate-850 px-4 py-2.5 rounded-2xl w-fit">
                 <IoCalendarOutline className="w-4 h-4 text-slate-400" />
-                <span>Member since <strong className="text-slate-350">{createdAt.toDateString()}</strong></span>
+                <span>
+                  Member since{" "}
+                  <strong className="text-slate-350">
+                    {createdAt.toDateString()}
+                  </strong>
+                </span>
               </div>
             )}
 
@@ -206,7 +215,6 @@ function Profile() {
                 </button>
               </div>
             )}
-
           </div>
         </div>
 
@@ -233,7 +241,6 @@ function Profile() {
             </button>
           </div>
         )}
-
       </div>
     </div>
   );

@@ -83,6 +83,10 @@ export const StoreProvider = ({ children }) => {
       
       // Update unread count
       fetchUnreadCount();
+
+      //fetchuser
+
+      fetchUser();
     });
 
     return () => {
@@ -462,6 +466,37 @@ export const StoreProvider = ({ children }) => {
 
   }
 
+
+
+  async function notificationA(id) {
+    try {
+      setIsLoading(true);
+      // setEditMode(false);
+      const response = await fetch(
+        `${apiurl}/notification/restore-access/${id} `,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      setIsLoading(false);
+
+      const data = await response.json();
+      console.log(data);
+
+      if (response.ok) {
+        toast.success(data.message);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   async function allowAccess(id) {
     try {
       setIsLoading(true);
@@ -750,6 +785,7 @@ export const StoreProvider = ({ children }) => {
     allowAccess,
     removeAdmin,
     notification,
+    notificationA,
     makeAdmin,
     createBookAdmin,
     updateBookAdmin,
