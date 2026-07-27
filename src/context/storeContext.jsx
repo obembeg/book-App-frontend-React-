@@ -145,11 +145,11 @@ export const StoreProvider = ({ children }) => {
       } else {
         setIsAuth(true);
         setIsAdmin(decode.isAdmin);
-
+        
         if (decode.isAdmin) {
           getAllUsers();
-          getAllCategory();
           getEveryBook();
+          getAllCategory();
         }
 
         if (!socket.connected) {
@@ -804,6 +804,8 @@ export const StoreProvider = ({ children }) => {
     noticeBox,
     setNoticeBox,
     everyBook,
+    setEveryBook,
+    getEveryBook,
     forgot,
     setforgot,
     confirmPassword,

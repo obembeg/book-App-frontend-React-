@@ -98,7 +98,7 @@ function Book() {
               {/* Pricing badge */}
               <div className="flex items-center gap-2 text-2xl font-extrabold text-white">
                 <IoPricetagOutline className="w-6 h-6 text-emerald-400" />
-                <span>₦{books?.price ? Number(books.price).toLocaleString() : "—"}</span>
+                <span>₦{books?.price ? Number(books.price).toLocaleString() : " Free"}</span>
               </div>
 
               {/* Action buttons */}

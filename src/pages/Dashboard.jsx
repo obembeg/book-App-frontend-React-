@@ -29,6 +29,7 @@ function Dashboard() {
   const {
     getAllBooks,
     everyBook,
+    getEveryBook,
     token,
     apiurl,
     books,
@@ -89,13 +90,14 @@ function Dashboard() {
     user,
   } = useContext(storeContext);
 
-  const [yourBooks, setYourBooks] = useState(false);
+  const [yourBooks, setYourBooks] = useState(true);
   const [platformBooks, setPlatformBooks] = useState(false);
 
   const selectedUser = users.find((user) => user.id === selectedUserId);
 
   useEffect(() => {
     getAllBooks();
+    getEveryBook();
     fetchUser();
   }, []);
 
@@ -1210,6 +1212,7 @@ function Dashboard() {
             <span
               onClick={() => {
                 setYourBooks(!yourBooks);
+                setPlatformBooks(false);
               }}
               className="text-blue-500 cursor-pointer"
             >
@@ -1218,7 +1221,8 @@ function Dashboard() {
             or Explore{" "}
             <span
               onClick={() => {
-                setPlatformBooks(true);
+                setPlatformBooks(!platformBooks);
+                setYourBooks(false);
               }}
               className="text-blue-500 cursor-pointer"
             >
@@ -1461,10 +1465,8 @@ function Dashboard() {
                       Publish Entry
                     </button>
                   ) : (
-                    <p
-                      className="w-full flex justify-center items-center px-4 py-3 bg-red-600 hover:bg-red-700 text-white text-sm font-bold rounded-xl shadow-lg shadow-indigo-600/15 transition "
-                    >
-                     Publish Blocked
+                    <p className="w-full flex justify-center items-center px-4 py-3 bg-red-600 hover:bg-red-700 text-white text-sm font-bold rounded-xl shadow-lg shadow-indigo-600/15 transition ">
+                      Publish Blocked
                     </p>
                   )}
                 </div>
@@ -1498,9 +1500,102 @@ function Dashboard() {
                 </div>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {Array.isArray(books) &&
-                  books.map((book) => (
+              <div className="overflow-y-auto pr-2 max-h-[calc(2*16rem+1.5rem)] [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-2 ml-1">
+                  {Array.isArray(books) &&
+                    books.map((book) => (
+                      <div
+                        key={book.id}
+                        className="p-6 bg-slate-900/40 backdrop-blur-xl border border-slate-800/80 hover:border-slate-700/60 rounded-3xl shadow-xl hover:scale-[1.01] hover:-translate-y-0.5 transition duration-300 flex flex-col justify-between"
+                      >
+                        <div>
+                          {/* Title & Price Header */}
+                          <div className="flex justify-between items-start gap-4">
+                            <h3 className="text-lg font-extrabold text-white leading-snug line-clamp-2">
+                              {book.title}
+                            </h3>
+                            <span className="inline-flex items-center text-xs font-bold text-emerald-400 bg-emerald-950/40 border border-emerald-900/35 px-2.5 py-1 rounded-full shadow-inner whitespace-nowrap">
+                              ₦{Number(book.price).toLocaleString()}
+                            </span>
+                          </div>
+
+                          {/* Author */}
+                          <p className="text-xs text-indigo-400 font-semibold mt-1">
+                            by {book.author}
+                          </p>
+
+                          {/* Category Label */}
+                          {book.category && (
+                            <div className="mt-3.5 inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-slate-950 border border-slate-800 text-[10px] text-slate-400 font-bold uppercase tracking-wider">
+                              <IoFolderOpenOutline className="w-3 h-3 text-slate-500" />
+                              {book.category.name}
+                            </div>
+                          )}
+
+                          {/* Description preview */}
+                          <p className="text-slate-400 text-xs mt-4 leading-relaxed line-clamp-3">
+                            {book.description ||
+                              "No book summary was uploaded."}
+                          </p>
+                        </div>
+
+                        {/* Footer Actions */}
+                        <div className="grid grid-cols-3 gap-2.5 pt-4 mt-6 border-t border-slate-850">
+                          <Link
+                            to={`/book/${book.id}`}
+                            className="flex items-center justify-center gap-1 px-3 py-2 text-xs font-bold text-slate-300 hover:text-white bg-slate-950/60 hover:bg-slate-950 border border-slate-800 rounded-xl transition duration-200"
+                          >
+                            <IoEyeOutline className="w-4 h-4" />
+                            <span>View</span>
+                          </Link>
+
+                          <button
+                            onClick={() => {
+                              setEditMode(true);
+                              setBookId(book.id);
+                              setAuthor(book.author);
+                              setCategory(book.category.id);
+                              setTitle(book.title);
+                              setPrice(book.price);
+                              setDescription(book.description);
+                              window.scrollTo({ top: 0, behavior: "smooth" });
+                            }}
+                            className="flex items-center justify-center gap-1 px-3 py-2 text-xs font-bold text-amber-400 hover:text-white bg-amber-950/20 hover:bg-amber-600 rounded-xl border border-amber-900/40 hover:border-transparent transition duration-200 cursor-pointer"
+                          >
+                            <IoCreateOutline className="w-4 h-4" />
+                            <span>Edit</span>
+                          </button>
+
+                          <button
+                            onClick={() => {
+                              setBookId(book.id);
+                              setDeleted(true);
+                            }}
+                            className="flex items-center justify-center gap-1 px-3 py-2 text-xs font-bold text-rose-450 hover:text-white bg-rose-950/20 hover:bg-rose-600 rounded-xl border border-rose-900/40 hover:border-transparent transition duration-200 cursor-pointer"
+                          >
+                            <IoTrashOutline className="w-4 h-4" />
+                            <span>Delete</span>
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {platformBooks && (
+          <div className="lg:col-span-8 space-y-6 ">
+            <h2 className="text-2xl font-bold text-white tracking-tight flex items-center gap-3">
+              <IoBookOutline className="w-6 h-6 text-indigo-400" />
+              Platform's Catalog Listings
+            </h2>
+
+            <div className="overflow-y-auto pr-2 max-h-[calc(2*16rem+1.5rem)] [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-2 ml-1">
+                {Array.isArray(everyBook) &&
+                  everyBook.map((book) => (
                     <div
                       key={book.id}
                       className="p-6 bg-slate-900/40 backdrop-blur-xl border border-slate-800/80 hover:border-slate-700/60 rounded-3xl shadow-xl hover:scale-[1.01] hover:-translate-y-0.5 transition duration-300 flex flex-col justify-between"
@@ -1544,39 +1639,11 @@ function Dashboard() {
                           <IoEyeOutline className="w-4 h-4" />
                           <span>View</span>
                         </Link>
-
-                        <button
-                          onClick={() => {
-                            setEditMode(true);
-                            setBookId(book.id);
-                            setAuthor(book.author);
-                            setCategory(book.category.id);
-                            setTitle(book.title);
-                            setPrice(book.price);
-                            setDescription(book.description);
-                            window.scrollTo({ top: 0, behavior: "smooth" });
-                          }}
-                          className="flex items-center justify-center gap-1 px-3 py-2 text-xs font-bold text-amber-400 hover:text-white bg-amber-950/20 hover:bg-amber-600 rounded-xl border border-amber-900/40 hover:border-transparent transition duration-200 cursor-pointer"
-                        >
-                          <IoCreateOutline className="w-4 h-4" />
-                          <span>Edit</span>
-                        </button>
-
-                        <button
-                          onClick={() => {
-                            setBookId(book.id);
-                            setDeleted(true);
-                          }}
-                          className="flex items-center justify-center gap-1 px-3 py-2 text-xs font-bold text-rose-450 hover:text-white bg-rose-950/20 hover:bg-rose-600 rounded-xl border border-rose-900/40 hover:border-transparent transition duration-200 cursor-pointer"
-                        >
-                          <IoTrashOutline className="w-4 h-4" />
-                          <span>Delete</span>
-                        </button>
                       </div>
                     </div>
                   ))}
               </div>
-            )}
+            </div>
           </div>
         )}
       </div>
