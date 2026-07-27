@@ -6,7 +6,7 @@ function BookCard({ book }) {
     <div className="bg-slate-900/40 backdrop-blur-xl border border-slate-800/80 rounded-2xl hover:border-slate-700/60 transition duration-350 overflow-hidden flex flex-col h-full hover:scale-[1.02] hover:-translate-y-0.5 shadow-lg shadow-slate-950/10">
       
       {/* Cover picture wrapper */}
-      <div className="relative overflow-hidden bg-slate-950 aspect-video sm:aspect-[3/4]">
+      <div className="relative overflow-hidden bg-slate-950 aspect-video sm:aspect-3/4">
         <img
           src={book.image || "/placeholder-book.png"}
           alt={book.title}
