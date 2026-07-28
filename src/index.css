@@ -100,11 +100,11 @@
 }
 
 .animate-fade-in-up {
-  animation: fadeInUp 2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: fadeInUp 3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .animate-fade-in-down {
-  animation: fadeInDown 2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: fadeInDown 6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 /* Sparkle & Glow Effects */

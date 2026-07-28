@@ -1207,7 +1207,7 @@ function Dashboard() {
           </p>
         </div>
         <div>
-          <h2 className="text-sm text-slate-400 font-semibold tracking-wide uppercase">
+          <h2 className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-950/50 border border-indigo-800/30 text-indigo-300 text-sm font-semibold tracking-wide shadow-inner">
             View{" "}
             <span
               onClick={() => {

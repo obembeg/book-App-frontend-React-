@@ -13,11 +13,12 @@ import { useContext, useEffect } from "react";
 import Spinner from "./layout/Spinner";
 import Book from "./pages/Book";
 import Reset from "./pages/Reset";
+import Features from "./pages/Features";
+import ScrollToTop from "./ScrollToTop";
 
 function App() {
   const { authLoading, setAuthLoading, isAuth } = useContext(storeContext);
 
-  
   useEffect(() => {
     const timer = setTimeout(() => {
       setAuthLoading(false);
@@ -36,6 +37,7 @@ function App() {
   return (
     <div className="flex flex-col min-h-screen">
       <Router>
+        <ScrollToTop />
         <Navbar />
         <ToastContainer
           position="top-right"
@@ -77,6 +79,8 @@ function App() {
               path="/reset-password"
               element={isAuth ? <Dashboard /> : <Reset />}
             />
+
+            <Route path="/features" element={<Features />} />
           </Routes>
         </main>
         <Footer />

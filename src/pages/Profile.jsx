@@ -101,7 +101,6 @@ function Profile() {
           <div className="px-6 pb-8 sm:px-10 relative z-10">
             {/* Avatar block and core info */}
             <div className="flex flex-col sm:flex-row sm:items-end sm:gap-6 mb-8 -mt-16 sm:-mt-24">
-              
               <div className="flex justify-center sm:justify-start relative z-20">
                 <img
                   src="https://i.pravatar.cc/300"
@@ -227,10 +226,20 @@ function Profile() {
                 My Reading Lists
               </span>
               <span className="text-xs font-bold text-slate-500 bg-slate-950 px-2.5 py-1 rounded-full group-hover:text-indigo-400 transition">
+                Coming Soon...🚀
+              </span>
+              <span className="text-xs font-bold text-slate-500 bg-slate-950 px-2.5 py-1 rounded-full transition">
                 0 lists
               </span>
             </button>
-            <button className="px-6 py-4 flex items-center justify-between bg-slate-900/40 backdrop-blur-xl border border-slate-800/80 hover:border-slate-700 rounded-2xl text-slate-300 hover:text-white text-sm font-bold transition duration-200 cursor-pointer shadow-lg group">
+            <button
+              className="px-6 py-4 flex items-center justify-between bg-slate-900/40 backdrop-blur-xl border border-slate-800/80 hover:border-slate-700 rounded-2xl text-slate-300 hover:text-white text-sm font-bold transition duration-200 cursor-pointer shadow-lg group"
+              onClick={() => {
+                setIsEditing(true);
+                setFullName(profile.fullName || "");
+                setBio(profile.bio || "");
+              }}
+            >
               <span className="flex items-center gap-2">
                 <IoSettingsOutline className="w-5 h-5 text-purple-400" />
                 Account Settings
